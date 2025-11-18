@@ -1,0 +1,84 @@
+spring:
+  application:
+    name: exam-platform
+  
+  # Database configuration
+  datasource:
+    url: jdbc:mysql://localhost:3306/exam_platform?useUnicode=true&characterEncoding=utf8mb4&serverTimezone=Asia/Shanghai
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      connection-timeout: 30000
+  
+  # JPA configuration
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+        format_sql: true
+  
+  # Redis configuration
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      password:
+      database: 0
+      timeout: 5000ms
+      lettuce:
+        pool:
+          max-active: 8
+          max-idle: 8
+          min-idle: 0
+          max-wait: -1ms
+  
+  # File upload configuration
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 100MB
+      max-request-size: 100MB
+
+# Server configuration
+server:
+  port: 8080
+  servlet:
+    context-path: /v1
+
+# Tencent COS configuration
+tencent:
+  cos:
+    secret-id: ${TENCENT_COS_SECRET_ID:your-secret-id}
+    secret-key: ${TENCENT_COS_SECRET_KEY:your-secret-key}
+    region: ap-guangzhou
+    bucket: ${TENCENT_COS_BUCKET:your-bucket-name}
+    base-url: https://${tencent.cos.bucket}.cos.${tencent.cos.region}.myqcloud.com
+
+# JWT configuration
+jwt:
+  secret: ${JWT_SECRET:exam-platform-secret-key-change-this-in-production}
+  expiration: 604800000 # 7 days in milliseconds
+  header: Authorization
+  prefix: Bearer
+
+# Application configuration
+app:
+  name: Graduate Exam Study Platform
+  version: 1.0.0
+
+# Logging configuration
+logging:
+  level:
+    root: INFO
+    com.exam: DEBUG
+    org.springframework.web: DEBUG
+    org.hibernate: INFO
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
